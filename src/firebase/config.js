@@ -2,16 +2,15 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCOJ9TERweeDkRw7y97CsogHqui_gN8gio",
-  authDomain: "booksstoredatabase.firebaseapp.com",
-  projectId: "booksstoredatabase",
-  storageBucket: "booksstoredatabase.firebasestorage.app",
-  messagingSenderId: "116890396450",
-  appId: "1:116890396450:web:213a4d699a48f27951e77b"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app)
+const db = getFirestore(app);
 
-export default db
+export default db;
