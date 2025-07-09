@@ -5,6 +5,7 @@ import { clearSelectedBooks } from "../features/books/booksSlice";
 import { hideForm } from "../features/hide/hideShowSlice";
 import { RxCrossCircled } from "react-icons/rx";
 import { SiTicktick } from "react-icons/si";
+import { toast } from "react-toastify";
 
 const Form = () => {
   // ---------------- state ------------------
@@ -36,11 +37,13 @@ const Form = () => {
       dispatch(updateData(bookData));
       dispatch(clearSelectedBooks());
       dispatch(hideForm());
+      toast.info("Update Successfull")
     } else {
       dispatch(addData(bookData));
       setBookData({});
       dispatch(hideForm());
       console.log(bookData);
+      toast.success("Added Successfull")
     }
   };
 

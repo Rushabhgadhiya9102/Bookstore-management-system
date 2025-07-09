@@ -9,6 +9,7 @@ import { BsPencilSquare } from "react-icons/bs";
 import { showForm } from "../features/hide/hideShowSlice";
 import Form from "../components/Form";
 import { FaBookAtlas } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [selectedGenre, setSelectedGenre] = useState("");
@@ -25,6 +26,7 @@ const Home = () => {
   const handleDelete = (id) => {
     dispatch(deleteData(id));
     console.log(id);
+    toast.success("Delete Successfull")
   };
 
   const handleUpdate = (book) => {

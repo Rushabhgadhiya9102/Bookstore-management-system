@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signUpUser } from "../auth/authThunk";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ const Signup = () => {
     e.preventDefault();
     dispatch(signUpUser({ email, password }));
     navigate('/Home')
+    toast.success("Create Account Successfull")
   };
 
   return (

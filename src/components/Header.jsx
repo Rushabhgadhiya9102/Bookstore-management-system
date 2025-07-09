@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../auth/authThunk";
 import { IoLogOutOutline } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 const Header = () => {
 
@@ -13,6 +14,7 @@ const Header = () => {
   const handleLogout = () => {
     dispatch(logoutUser())
     navigate("/");
+    toast.success("Logout Successfull")
   };
 
   return (

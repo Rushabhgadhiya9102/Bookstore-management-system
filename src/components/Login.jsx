@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../auth/authThunk";
 import { PiHandWavingFill } from "react-icons/pi";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
+    toast.success("Logging Successfull")
   };
 
   useEffect(() => {
@@ -25,20 +27,21 @@ const Login = () => {
 
   return (
     <form onSubmit={handleLogin} className="px-1">
-      {/* Heading */}
+      
+      {/* ---------- Heading ------------ */}
       <div className="text-center mb-4">
         <h2 className="fw-bold">Login <PiHandWavingFill color="orange" /></h2>
         <p className="text-muted small">Log in to access your library</p>
       </div>
 
-      {/* Error Alert */}
+      {/* --------------- Error Alert ------------- */}
       {error && (
         <div className="alert alert-danger py-2 small" role="alert">
           {error}
         </div>
       )}
 
-      {/* Email Field */}
+      {/* -------------- Email Field --------------- */}
       <div className="form-floating mb-3">
         <input
           type="email"
@@ -52,7 +55,7 @@ const Login = () => {
         <label htmlFor="emailInput">Email address</label>
       </div>
 
-      {/* Password Field */}
+      {/* --------------- Password Field --------------- */}
       <div className="form-floating mb-4">
         <input
           type="password"
@@ -66,7 +69,7 @@ const Login = () => {
         <label htmlFor="passwordInput">Password</label>
       </div>
 
-      {/* Submit Button */}
+      {/* ------------- Submit Button -------------- */}
       <button
         className="btn btn-primary w-100 py-2 fw-semibold rounded-pill"
         type="submit"
