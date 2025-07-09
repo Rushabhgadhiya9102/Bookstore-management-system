@@ -1,7 +1,7 @@
 import { signOut } from "firebase/auth";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../auth/authThunk";
 import { IoLogOutOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
@@ -10,10 +10,16 @@ const Header = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.auth.user);
 
-  const handleLogout = async () => {
-    dispatch(logoutUser())
+  useEffect(() => {
+  if (user === null) {
     navigate("/");
+  }
+}, [user, navigate]);
+
+  const handleLogout = () => {
+    dispatch(logoutUser())
     toast.success("Logout Successfull")
   };
 
