@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Header from "../components/Header";
 import bannerImg from "../assets/banner-img.jpg";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,9 +11,12 @@ import Form from "../components/Form";
 import { FaBookAtlas } from "react-icons/fa6";
 
 const Home = () => {
+  const [selectedGenre, setSelectedGenre] = useState("");
+  const [textFilter, setTextFilter] = useState("");
   const { books } = useSelector((state) => state.books);
   const hideForm = useSelector((state) => state.form.show);
   const dispatch = useDispatch();
+  const searchRef = useRef();
 
   useEffect(() => {
     dispatch(fetchData());
@@ -26,12 +29,30 @@ const Home = () => {
 
   const handleUpdate = (book) => {
     dispatch(setSelectedBooks(book));
+    dispatch(showForm());
   };
+
+  const handleGenreChange = (e) => {
+    setSelectedGenre(e.target.value);
+  };
+
+  const filteredBooks = books.filter((book) => {
+    const matchesGenre = selectedGenre ? book.gerne === selectedGenre : true;
+    const matchesSearch =
+      book.bookName?.toLowerCase().includes(textFilter.toLowerCase()) ||
+      book.authorName?.toLowerCase().includes(textFilter.toLowerCase());
+
+    return matchesGenre && matchesSearch;
+  });
 
   return (
     <>
       <article>
+        {/* --------- header ------------ */}
         <Header />
+
+        {/* --------- banner section ----------- */}
+
         <section className="banner-section bg-light">
           <div className="container">
             <div className="row vh-100 align-items-center">
@@ -59,7 +80,7 @@ const Home = () => {
                   <img
                     src={bannerImg}
                     className="w-50 mx-auto rounded"
-                    alt=""
+                    alt="banner-img"
                   />
                 </div>
               </div>
@@ -67,15 +88,43 @@ const Home = () => {
           </div>
         </section>
 
+        {/* ----------- book collection ------------ */}
+
         <section className="book-collection py-5">
           <div className="container">
-            <div className="title">
-              <h2 className="text-primary text-center fw-bold mb-5">
+            <div className="title mb-5 d-flex justify-content-between align-items-center">
+              <h2 className="text-primary text-center fw-bold">
                 Explore Collections
               </h2>
-            </div>
 
-            <div className="d-flex justify-content-between align-items-center mb-4">
+                <div className="ms-auto me-2">
+                  <input
+                    type="search"
+                    placeholder="search"
+                    onChange={(e) => setTextFilter(e.target.value)}
+                    value={textFilter}
+                    ref={searchRef}
+                    className="form-control"
+                  />
+                </div>
+              <div className=" me-2" style={{ width: "100px" }}>
+
+                <select
+                  name="gerne"
+                  id="taskType"
+                  className="form-control"
+                  onChange={handleGenreChange}
+                  value={selectedGenre || ""}
+                >
+                  <option value="">Sort</option>
+                  <option value="Fiction">Fiction</option>
+                  <option value="Biography">Biography</option>
+                  <option value="Science">Science</option>
+                  <option value="Business">Business</option>
+                  <option value="Self-Help">Self-Help</option>
+                  <option value="Fantasy">Fantasy</option>
+                </select>
+              </div>
               <button
                 onClick={() => dispatch(showForm())}
                 className="btn btn-primary"
@@ -87,33 +136,42 @@ const Home = () => {
             {hideForm && <Form />}
 
             <div className="row g-3">
-              {books.map((val, index) => {
-                const { bookName, authorName, price, id } = val;
+              {filteredBooks.map((val, index) => {
+                const { bookName, authorName, price, gerne, date, id } = val;
 
                 return (
                   <div key={index} className="col-6 col-sm-6 col-md-4 col-lg-3">
                     <div className="book-item">
                       <div className="card shadow pb-2 border-0">
-                        <img
-                          src="..."
-                          className="card-img-top"
-                          height={"200px"}
-                          alt="..."
-                        />
+                        <div
+                          className="book-icons d-flex justify-content-center align-items-center text-primary"
+                          style={{ height: "200px" }}
+                        >
+                          <FaBookAtlas size={150} />
+                        </div>
                         <div className="card-body">
                           <h4 className="card-title">{bookName}</h4>
-                          <p className="card-text mb-0">{authorName}</p>
+                          <p className="text-secondary">
+                            By{" "}
+                            <span className="fw-bold text-primary">
+                              {authorName}
+                            </span>{" "}
+                            on {date}
+                          </p>
                           <p className="card-text text-primary fw-semibold">
                             ₹ {price}
                           </p>
                         </div>
-                        <div className="card-footer d-flex border-0 bg-white">
+                        <div className="card-footer d-flex justify-content-between align-items-center border-0 bg-white">
                           <button
-                            className="btn btn-outline-danger me-auto"
+                            className="btn btn-outline-danger"
                             onClick={() => handleDelete(id)}
                           >
                             <FaTrash />
                           </button>
+                          <p className="text-secondary fw-semibold mb-0">
+                            {gerne}
+                          </p>
                           <button
                             className="btn btn-outline-warning"
                             onClick={() => handleUpdate(val)}
