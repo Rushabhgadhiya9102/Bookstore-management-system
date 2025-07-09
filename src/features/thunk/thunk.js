@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import db from "../../firebase/config";
-import {addDoc, collection, deleteDoc, getDocs, updateDoc} from 'firebase/firestore'
+import {addDoc, collection, deleteDoc, doc, getDocs, updateDoc} from 'firebase/firestore'
 
 const bookRef = collection(db, "books")
 
@@ -11,7 +11,7 @@ export const fetchData = createAsyncThunk('books/fetchData', async(_,rejectWithV
         const snapshots = await getDocs(bookRef)
         return snapshots.docs.map(doc=> ({...doc.data(), id:doc.id}))
     } catch (error) {
-        rejectWithValue(error.message)
+       return rejectWithValue(error.message)
     }
 })
 
@@ -22,7 +22,7 @@ export const addData = createAsyncThunk('books/addData', async(book,rejectWithVa
         const docRef = await addDoc(bookRef,book)
         return {id:docRef.id, ...book}
     } catch (error) {
-        rejectWithValue(error.message)
+       return rejectWithValue(error.message)
     }
 })
 
@@ -33,18 +33,19 @@ export const deleteData = createAsyncThunk('books/deleteData', async(id) =>{
         await deleteDoc(doc(bookRef, id))
         return id
     } catch (error) {
-        rejectWithValue(error.message)
+       return rejectWithValue(error.message)
     }
 })
 
 // --------------- update book data ------------------
 
-export const updateData = createAsyncThunk("books,updateData", async(id, book)=>{
+export const updateData = createAsyncThunk("books,updateData", async(book,rejectWithValue)=>{
     try {
+        const {id, ...bookData} = book
         const ref = doc(bookRef,id)
-        await updateDoc(ref, book)
-        return {id, ...book}
+        await updateDoc(ref, bookData)
+        return {id, ...bookData}
     } catch (error) {
-        
+       return rejectWithValue(error.message)
     }
 })
