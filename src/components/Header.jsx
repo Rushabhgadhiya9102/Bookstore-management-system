@@ -11,7 +11,7 @@ const Header = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(logoutUser())
     navigate("/");
     toast.success("Logout Successfull")

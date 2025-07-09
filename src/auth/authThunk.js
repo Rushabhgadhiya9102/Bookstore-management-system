@@ -17,13 +17,13 @@ export const loginUser = createAsyncThunk(
         email,
         password
       );
-      const user = userCredential.user
+      const user = userCredential.user;
       return {
         uid: user.uid,
         email: user.email,
       };
     } catch (error) {
-      rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -39,19 +39,26 @@ export const signUpUser = createAsyncThunk(
         email,
         password
       );
-      const user = userCredential.user
+      const user = userCredential.user;
       return {
         uid: user.uid,
         email: user.email,
       };
     } catch (error) {
-      rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
 
 // --------------- auth login ----------------
 
-export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
-  await signOut(auth);
-});
+export const logoutUser = createAsyncThunk(
+  "auth/logoutUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
