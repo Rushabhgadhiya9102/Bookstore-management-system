@@ -4,7 +4,7 @@ This is a web application for managing a collection of books, allowing users to 
 
 ## Demo
 
-You can access a live demo of the application here: [https://bookstore-management-system-coral.vercel.app/](https://bookstore-management-system-coral.vercel.app/)
+You can access a live demo of the application here: [BookStore-Management](https://bookstore-management-system-coral.vercel.app/)
 
 ## Features
 
