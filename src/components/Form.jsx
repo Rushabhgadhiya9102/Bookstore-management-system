@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addData, updateData } from "../features/thunk/thunk";
 import { clearSelectedBooks } from "../features/books/booksSlice";
+import { hideForm } from "../features/hide/hideShowSlice";
 
 const Form = () => {
   const [bookData, setBookData] = useState({});
@@ -25,18 +26,25 @@ const Form = () => {
     e.preventDefault();
     if (selectedBooks) {
       dispatch(updateData(bookData));
-      dispatch(clearSelectedBooks())  
+      dispatch(clearSelectedBooks());
     } else {
       dispatch(addData(bookData));
-      setBookData({})
+      setBookData({});
+      dispatch(hideForm());
       console.log(bookData);
     }
+  };
+
+  const handleCancle = (e) => {
+    e.preventDefault()
+    setBookData({});
+    dispatch(hideForm());
   };
 
   return (
     <>
       <section className="container">
-        <form method="post" onSubmit={handleSubmit}>
+        <form method="post" className="my-5">
           <div className="mb-3">
             <label htmlFor="bookName" className="form-label">
               Book Name
@@ -46,7 +54,7 @@ const Form = () => {
               id="bookName"
               onChange={handleChange}
               name="bookName"
-              value={bookData.bookName || ''}
+              value={bookData.bookName || ""}
               className="form-control"
             />
           </div>
@@ -59,12 +67,30 @@ const Form = () => {
               id="authorName"
               onChange={handleChange}
               name="authorName"
-              value={bookData.authorName || ''}
+              value={bookData.authorName || ""}
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="price" className="form-label">
+              Price
+            </label>
+            <input
+              type="number"
+              id="price"
+              onChange={handleChange}
+              name="price"
+              value={bookData.price || ""}
               className="form-control"
             />
           </div>
 
-          <button className="btn btn-primary">{selectedBooks? "Update" : "Submit"}</button>
+          <button className="btn btn-primary" onClick={handleSubmit}>
+            {selectedBooks ? "Update" : "Submit"}
+          </button>
+          <button className="btn btn-danger ms-2" onClick={handleCancle}>
+            Cancle
+          </button>
         </form>
       </section>
     </>

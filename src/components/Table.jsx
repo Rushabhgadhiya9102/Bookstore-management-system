@@ -5,25 +5,12 @@ import { setSelectedBooks } from "../features/books/booksSlice";
 
 const Table = () => {
   const { books } = useSelector((state) => state.books);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchData());
-  }, [dispatch]);
-
-  const handleDelete = (id) => {
-    dispatch(deleteData(id));
-    console.log(id);
-  };
-
-  const handleUpdate = (book)=>{
-    dispatch(setSelectedBooks(book))
-  }
+  
 
   return (
     <>
       <section className="container">
-        <table className="table">
+        <table className="table table-striped">
           <thead>
             <tr>
               <th>Name</th>

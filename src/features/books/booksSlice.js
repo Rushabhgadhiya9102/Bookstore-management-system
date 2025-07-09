@@ -85,14 +85,6 @@ const booksSlice = createSlice({
             });
         });
 
-        // builder.addCase(updateData.fulfilled,(state,action)=>{
-        //     state.loading = false
-        //     const index = state.books.findIndex(book => book.id === action.payload.id)
-        //     if(index === -1) {
-        //         state.books[index] = action.payload
-        //     }
-        // })
-
         builder.addCase(updateData.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
